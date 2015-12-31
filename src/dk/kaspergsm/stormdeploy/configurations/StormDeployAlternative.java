@@ -9,7 +9,7 @@ import org.jclouds.scriptbuilder.domain.Statement;
 import dk.kaspergsm.stormdeploy.Tools;
 
 /**
- * Contains all methods to configure SnormDeployAlternative on remote node
+ * Contains all methods to configure StormDeployAlternative on remote node
  * 
  * @author Kasper Grud Skat Madsen
  */
