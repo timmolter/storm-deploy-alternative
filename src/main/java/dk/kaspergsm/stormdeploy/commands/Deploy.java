@@ -60,10 +60,11 @@ public class Deploy {
 		
 		
 		/**
-		 * Attach
+		 * Write storm.yaml and supervisor.yaml files to local computer
 		 */
+		// TODO Is this necessary?
 		try {
-			log.info("Attaching to cluster");
+			log.info("Creating storm.yaml and supervisor.yaml files");
 			
 			String uiPublicAddress = "";
 			if (getUINode(config, newNodes) != null)
@@ -76,7 +77,7 @@ public class Deploy {
 					uiPublicAddress, 
 					clustername);
 		} catch (IOException ex) {
-			log.error("Problem attaching to cluster", ex);
+			log.error("Creating storm.yaml and supervisor.yaml files", ex);
 		}
 		
 		

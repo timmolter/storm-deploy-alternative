@@ -17,7 +17,7 @@ public class NodeConfiguration {
 	public static List<Statement> getCommands(String clustername, Credential credentials, Configuration config, List<String> zookeeperHostnames, List<String> drpcHostnames, String nimbusHostname, String uiHostname) {
 		List<Statement> commands = new ArrayList<Statement>();
 		
-		// Install system tools
+		// Install system tools, Java, etc.
 		commands.addAll(SystemTools.init(PACKAGE_MANAGER.APT));
 
 		// Configure IAM credentials
@@ -38,9 +38,9 @@ public class NodeConfiguration {
 		}
 		
 		// Download and configure storm-deploy-alternative (before anything with supervision is started)
-		commands.addAll(StormDeployAlternative.download());
-		commands.addAll(StormDeployAlternative.writeConfigurationFiles(Tools.getWorkDir() + "conf" + File.separator + "configuration.yaml", Tools.getWorkDir() + "conf" + File.separator + "credential.yaml"));
-		commands.addAll(StormDeployAlternative.writeLocalSSHKeys(config.getSSHKeyName()));
+    commands.addAll(StormDeployAlternative.download(config.getSDACloudJarLocation()));
+		commands.addAll(StormDeployAlternative.writeConfigurationFilesToRemote(Tools.getWorkDir() + "conf" + File.separator + "configuration.yaml", Tools.getWorkDir() + "conf" + File.separator + "credential.yaml"));
+		commands.addAll(StormDeployAlternative.writeLocalSSHKeysToRemote(config.getSSHKeyName()));
 		
 		// Download Storm
 		commands.addAll(Storm.download(config.getStormRemoteLocation()));
@@ -55,10 +55,10 @@ public class NodeConfiguration {
 		if (config.getRemoteExecPreConfig().size() > 0)
 			commands.addAll(Tools.runCustomCommands(config.getRemoteExecPreConfig()));
 		
-		// Configure Zookeeper (update configurationfiles)
+		// Configure Zookeeper (update configuration files)
 		commands.addAll(Zookeeper.configure(zookeeperHostnames));
 		
-		// Configure Storm (update configurationfiles)
+		// Configure Storm (update configuration files)
 		commands.addAll(Storm.configure(nimbusHostname, zookeeperHostnames, drpcHostnames, config.getImageUsername()));
 		
 		// Configure Ganglia

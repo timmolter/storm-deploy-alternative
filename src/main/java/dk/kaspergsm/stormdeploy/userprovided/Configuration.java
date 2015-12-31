@@ -6,8 +6,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import dk.kaspergsm.stormdeploy.Tools;
 
 /**
@@ -21,7 +24,7 @@ public class Configuration {
 	private String _imageID = null, _locationID = null;
 	private ArrayList<String> _conf;
 	
-	private HashSet<String> _allConfigurationSettings = new HashSet<String>(Arrays.asList(
+	private Set<String> _allConfigurationSettings = new HashSet<String>(Arrays.asList(
 			"storm-version", 
 			"zk-version",
 			"image","image-username",
@@ -29,7 +32,8 @@ public class Configuration {
 			"memory-monitor",
 			"remote-exec-preconfig",
 			"remote-exec-postconfig",
-			"ssh-key-name"));
+			"ssh-key-name",
+			"storm-deploy-alternative-jar-url"));
 	
 	public static Configuration fromYamlFile(File f, String clustername) {
 		return new Configuration(Tools.readYamlConf(f), clustername);
@@ -178,6 +182,16 @@ public class Configuration {
 		return sshKeyName;
 	}
 	
+	 /**
+   * Get region
+   */
+  public String getSDACloudJarLocation() {
+    if (_locationID != null) {
+      return _locationID;
+    }
+    return getRawConfigValue("storm-deploy-alternative-jar-url");
+  }
+  
 	private String getRawConfigValue(String k) {
 		for (int i = 0; i < _conf.size(); i++) {
 			String key = _conf.get(i).substring(0, _conf.get(i).indexOf(" "));

@@ -112,9 +112,10 @@ public class Storm {
 	}
 	
 	/**
-	 * Used to write config files to $HOME/.storm/
-	 * these are needed for the storm script to know where to submit topologies etc.
+	 * Used to write config files to $HOME/.storm/ on local machine
+	 * These are needed for the storm script to know where to submit topologies etc.
 	 */
+	// TODO Try removing this and see what happens
 	public static void writeStormAttachConfigFiles(List<String> zookeeperNodesHostname, List<String> supervisorNodesHostname, String nimbusHost, String uiHost, String clustername) throws IOException {
 		String userHome = Tools.getHomeDir();
 		new File(userHome + ".storm").mkdirs();

@@ -36,8 +36,8 @@ public class EC2Tools {
 		
 		// Write credentials
 		st.add(exec("mkdir ~/.ec2"));
-		st.addAll(Tools.echoFile(certPath, "~/.ec2/cert.pem"));
-		st.addAll(Tools.echoFile(privPath, "~/.ec2/priv.pem"));
+		st.addAll(Tools.echoFlatFile(certPath, "~/.ec2/cert.pem"));
+		st.addAll(Tools.echoFlatFile(privPath, "~/.ec2/priv.pem"));
 		
 		// Write configuration to bashrc (for logging in)
 		st.add(exec("echo \"export EC2_KEYPAIR=jclouds#" + jobname + "\" >> ~/.bashrc")); // Export name of keypair to use

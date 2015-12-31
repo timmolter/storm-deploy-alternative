@@ -115,7 +115,10 @@ public class Tools {
 	 * Run set of queued commands now
 	 */
 	public static void executeOnNodes(List<Statement> commands, boolean runAsRoot, String clustername, ComputeService compute, String username, String sshKeyName) throws RunScriptOnNodesException, InterruptedException, ExecutionException, TimeoutException {
-		compute.runScriptOnNodesMatching(
+	
+	  System.out.println("Running setup!");
+	  
+	  compute.runScriptOnNodesMatching(
 				NodePredicates.runningInGroup(clustername),
 				new StatementList(commands),
 				new RunScriptOptions()
@@ -185,9 +188,9 @@ public class Tools {
 	}
 
 	/**
-	 * Used to read local file, and echo into remote file
+	 * Used to read local file, and echo into remote file. Doesn't work for binary files.
 	 */
-	public static List<Statement> echoFile(String localPath, String remotePath) {
+	public static List<Statement> echoFlatFile(String localPath, String remotePath) {
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		for (String l : readFile(localPath).split("\n"))
 			st.add(exec("echo '" + l + "' >> " + remotePath));
@@ -202,36 +205,47 @@ public class Tools {
 	 * Download, extract, remove and rename if necessary
 	 * RemotePath should always be downloadable by wget
 	 */
-	public static List<Statement> download(String localPath, String remotePath, boolean extract, boolean delete, String finalName) {
-		ArrayList<Statement> st = new ArrayList<Statement>();
-		st.add(exec("cd " + localPath));
-		
-		// Extract filename
-		String filename = remotePath.substring(remotePath.lastIndexOf("/") + 1);
-		
-		// Download file
-		st.add(exec("wget -N " + remotePath));
-		
-		// Extract file
-		if (extract) {
-			st.add(exec("tar -zxf " + filename));
-		}
-		
-		// Delete file
-		if (delete) {
-			st.add(exec("rm " + filename));
-		}
-		
-		if (finalName != null) {
-			 int index = filename.lastIndexOf(".tar");
-			 if (index > 0) {
-				 filename = filename.substring(0, filename.lastIndexOf(".tar"));
-			 }
-			 String testAndMove = "[ ! -e " + finalName + " ] && mv " + filename + " " + finalName;
-			 st.add(exec(testAndMove));
-		}
-		return st;
-	}
+  public static List<Statement> download(String localPath, String remotePath, boolean extract, boolean delete, String finalName) {
+    ArrayList<Statement> st = new ArrayList<Statement>();
+    st.add(exec("cd " + localPath));
+    
+    // Extract filename
+    String filename = remotePath.substring(remotePath.lastIndexOf("/") + 1);
+    
+    // Download file
+    st.add(exec("wget -N " + remotePath));
+    
+    // Extract file
+    if (extract) {
+      st.add(exec("tar -zxf " + filename));
+    }
+    
+    // Delete file
+    if (delete) {
+      st.add(exec("rm " + filename));
+    }
+    
+    if (finalName != null) {
+       int index = filename.lastIndexOf(".tar");
+       if (index > 0) {
+         filename = filename.substring(0, filename.lastIndexOf(".tar"));
+       }
+       String testAndMove = "[ ! -e " + finalName + " ] && mv " + filename + " " + finalName;
+       st.add(exec(testAndMove));
+    }
+    return st;
+  } 
+  
+  public static List<Statement> downloadJar(String localPath, String remotePath) {
+    
+    ArrayList<Statement> st = new ArrayList<Statement>();
+    st.add(exec("cd " + localPath));
+    
+    // Download file
+    st.add(exec("wget -N " + remotePath));
+    
+    return st;
+  }
 	
 	/**
 	 * @param cond	must contain all between []; of bash if,then

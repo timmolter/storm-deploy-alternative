@@ -3,6 +3,7 @@ package dk.kaspergsm.stormdeploy.image;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,7 +16,7 @@ import java.util.TimerTask;
  * @author Kasper Grud Skat Madsen
  */
 public class ProcessMonitor {
-	private static long _daemonStartTime = 300000; // 5 minutes in milliseconds
+	private static final long _daemonStartTime = 300000; // 5 minutes in milliseconds
 	private static long _startDaemonTs;
 	private static String[] _toExec;
 	private static String _process;
@@ -32,9 +33,12 @@ public class ProcessMonitor {
 		
 		// Parse
 		_process = args[0].replaceAll("\"", "");
+		System.out.println("_process= "+ _process);
 		_toExec = new String[args.length - 1];
-		for (int i = 1; i < args.length; i++)
+    for (int i = 1; i < args.length; i++){
 			_toExec[i-1] = args[i].replaceAll("\"", "");
+    }
+    System.out.println("_toExec= "+ Arrays.toString(_toExec));
 
 		// Schedule work
 		t = new Timer();
@@ -61,6 +65,7 @@ public class ProcessMonitor {
         // read the output from the command
         String s = null;
         while ((s = i.readLine()) != null) {
+          System.out.println("  s: " + s);
         	if (s.contains(_process) && !s.contains("storm-deploy-alternative.jar")) // filter the monitoring process
         		return true;
         }
@@ -68,8 +73,9 @@ public class ProcessMonitor {
         // Only if more than _initialStartup has passed, return false
         // It is imperative the daemons gets enough time to start!
         long passedTimeSinceDaemonLaunch = System.currentTimeMillis() - _startDaemonTs;
-        if (passedTimeSinceDaemonLaunch >= _daemonStartTime)
+        if (passedTimeSinceDaemonLaunch >= _daemonStartTime){
         	return false;
+        }
         return true;
 	}
 }

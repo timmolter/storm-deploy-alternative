@@ -13,3 +13,4 @@ ectwo:
     - remote-exec-preconfig {cd ~, echo hey > hey.txt}
     - remote-exec-postconfig {}
     - ssh-key-name "mySSHKeyName"           # Optional. defaults to "id_rsa"
+    - storm-deploy-alternative-cloud-jar-url "https://s3-eu-west-1.amazonaws.com/storm-deploy-alternative-cloud.jar"
