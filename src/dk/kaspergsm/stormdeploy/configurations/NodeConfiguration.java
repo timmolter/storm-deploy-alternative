@@ -37,10 +37,6 @@ public class NodeConfiguration {
 			commands.addAll(EC2Tools.configure(credentials.get_ec2_X509CertificatePath(), credentials.get_ec2_X509PrivateKeyPath(), config.getDeploymentLocation(), clustername));
 		}
 		
-		// Conditional - Download and configure ZeroMQ (including jzmq binding)
-		commands.addAll(ZeroMQ.download());
-		commands.addAll(ZeroMQ.configure());
-		
 		// Download and configure storm-deploy-alternative (before anything with supervision is started)
 		commands.addAll(StormDeployAlternative.download());
 		commands.addAll(StormDeployAlternative.writeConfigurationFiles(Tools.getWorkDir() + "conf" + File.separator + "configuration.yaml", Tools.getWorkDir() + "conf" + File.separator + "credential.yaml"));
