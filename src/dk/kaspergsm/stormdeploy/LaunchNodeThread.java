@@ -90,7 +90,8 @@ public class LaunchNodeThread extends Thread {
 											.userMetadata("daemons", _daemons.toString())
 											.runScript(new StatementList(_initScript))
 											.overrideLoginCredentials(Tools.getPrivateKeyCredentials(_username, _sshkeyname))
-											.authorizePublicKey(Tools.getPublicKey(_sshkeyname))).build());
+											.authorizePublicKey(Tools.getPublicKey(_sshkeyname)))
+							.build());
 		} catch (NoSuchElementException ex) {
 			// happens often when hardwareId is not found. List all possible hardware types
 			if (ex.getMessage().toLowerCase().contains("hardwareid") && ex.getMessage().toLowerCase().contains("not found")) {
