@@ -189,7 +189,7 @@ public class Configuration {
     if (_locationID != null) {
       return _locationID;
     }
-    return getRawConfigValue("storm-deploy-alternative-jar-url");
+    return getRawConfigValue("storm-deploy-alternative-cloud-jar-url");
   }
   
 	private String getRawConfigValue(String k) {
