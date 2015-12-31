@@ -171,7 +171,7 @@ public class Configuration {
 	public String getSSHKeyName() {
 		String sshKeyName = getRawConfigValue("ssh-key-name");
 		
-		// If no sshKeyName is specifed, assume "id_rsa"
+		// If no sshKeyName is specified, assume "id_rsa"
 		if (sshKeyName == null)
 			return "id_rsa";
 		
