@@ -59,66 +59,66 @@ public class Deploy {
 		HashMap<Integer, NodeMetadata> newNodes = startNodesNow(config, computeContext.getComputeService(), clustername);
 		
 		
-//		/**
-//		 * Attach
-//		 */
-//		try {
-//			log.info("Attaching to cluster");
-//			
-//			String uiPublicAddress = "";
-//			if (getUINode(config, newNodes) != null)
-//				uiPublicAddress = getUINode(config, newNodes).getPublicAddresses().iterator().next();
-//			
-//			Storm.writeStormAttachConfigFiles(
-//					getNewInstancesPublicIp(config, "ZK", newNodes), 
-//					getNewInstancesPublicIp(config, "WORKER", newNodes), 
-//					getNimbusNode(config, newNodes).getPublicAddresses().iterator().next(),
-//					uiPublicAddress, 
-//					clustername);
-//		} catch (IOException ex) {
-//			log.error("Problem attaching to cluster", ex);
-//		}
-//		
-//		
-//		/**
-//		 * Configure all nodes
-//		 */
-//		try {
-//			log.info("Configuring instance(s)");
-//			Tools.executeOnNodes(
-//					NodeConfiguration.getCommands(
-//							clustername,
-//							credentials,
-//							config, 
-//							getNewInstancesPrivateIp(config, "ZK", newNodes), 
-//							getNewInstancesPrivateIp(config, "DRPC", newNodes), 
-//							getNimbusNode(config, newNodes).getPrivateAddresses().iterator().next(), 
-//							getUINode(config, newNodes).getPrivateAddresses().iterator().next()),
-//					true,
-//					clustername, 
-//					computeContext.getComputeService(),
-//					config.getImageUsername(),
-//					config.getSSHKeyName());
-//		} catch (RunScriptOnNodesException ex) {
-//			log.error("Problem configuring instance(s)", ex);
-//		} catch (InterruptedException ex) {
-//			log.error("Problem configuring instance(s)", ex);
-//		} catch (ExecutionException ex) {
-//			log.error("Problem configuring instance(s)", ex);
-//		} catch (TimeoutException ex) {
-//			log.error("Problem configuring instance(s)", ex);
-//		}
-//		
-//		
-//		/**
-//		 * Print final info
-//		 */
-//		log.info("User: " + config.getImageUsername());
-//		log.info("Started:");
-//		for (NodeMetadata n : newNodes.values())
-//			log.info("\t" + n.getPublicAddresses().iterator().next() + "\t" + n.getUserMetadata().get("daemons").toString());
-//		log.info("Storm UI: http://" + getUINode(config, newNodes).getPublicAddresses().iterator().next() + ":8080");
-//		log.info("Ganglia UI: http://" + getUINode(config, newNodes).getPublicAddresses().iterator().next() + "/ganglia");
+		/**
+		 * Attach
+		 */
+		try {
+			log.info("Attaching to cluster");
+			
+			String uiPublicAddress = "";
+			if (getUINode(config, newNodes) != null)
+				uiPublicAddress = getUINode(config, newNodes).getPublicAddresses().iterator().next();
+			
+			Storm.writeStormAttachConfigFiles(
+					getNewInstancesPublicIp(config, "ZK", newNodes), 
+					getNewInstancesPublicIp(config, "WORKER", newNodes), 
+					getNimbusNode(config, newNodes).getPublicAddresses().iterator().next(),
+					uiPublicAddress, 
+					clustername);
+		} catch (IOException ex) {
+			log.error("Problem attaching to cluster", ex);
+		}
+		
+		
+		/**
+		 * Configure all nodes
+		 */
+		try {
+			log.info("Configuring instance(s)");
+			Tools.executeOnNodes(
+					NodeConfiguration.getCommands(
+							clustername,
+							credentials,
+							config, 
+							getNewInstancesPrivateIp(config, "ZK", newNodes), 
+							getNewInstancesPrivateIp(config, "DRPC", newNodes), 
+							getNimbusNode(config, newNodes).getPrivateAddresses().iterator().next(), 
+							getUINode(config, newNodes).getPrivateAddresses().iterator().next()),
+					true,
+					clustername, 
+					computeContext.getComputeService(),
+					config.getImageUsername(),
+					config.getSSHKeyName());
+		} catch (RunScriptOnNodesException ex) {
+			log.error("Problem configuring instance(s)", ex);
+		} catch (InterruptedException ex) {
+			log.error("Problem configuring instance(s)", ex);
+		} catch (ExecutionException ex) {
+			log.error("Problem configuring instance(s)", ex);
+		} catch (TimeoutException ex) {
+			log.error("Problem configuring instance(s)", ex);
+		}
+		
+		
+		/**
+		 * Print final info
+		 */
+		log.info("User: " + config.getImageUsername());
+		log.info("Started:");
+		for (NodeMetadata n : newNodes.values())
+			log.info("\t" + n.getPublicAddresses().iterator().next() + "\t" + n.getUserMetadata().get("daemons").toString());
+		log.info("Storm UI: http://" + getUINode(config, newNodes).getPublicAddresses().iterator().next() + ":8080");
+		log.info("Ganglia UI: http://" + getUINode(config, newNodes).getPublicAddresses().iterator().next() + "/ganglia");
 		
 		/**
 		 * Close application now
