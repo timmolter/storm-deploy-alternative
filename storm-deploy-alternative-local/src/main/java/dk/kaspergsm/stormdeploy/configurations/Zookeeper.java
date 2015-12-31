@@ -52,7 +52,7 @@ public class Zookeeper {
 	public static List<Statement> startDaemonSupervision(String username) {
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		st.add(exec("cd ~"));
-		st.add(exec("su -c 'case $(head -n 1 ~/daemons) in *ZK*) java -cp \"sda/storm-deploy-alternative.jar\" dk.kaspergsm.stormdeploy.image.ProcessMonitor org.apache.zookeeper.server zookeeper/bin/zkServer.sh start ;; esac &' - " + username));
+		st.add(exec("su -c 'case $(head -n 1 ~/daemons) in *ZK*) java -cp \"sda/storm-deploy-alternative-cloud.jar\" dk.kaspergsm.stormdeploy.image.ProcessMonitor org.apache.zookeeper.server zookeeper/bin/zkServer.sh start ;; esac &' - " + username));
 		return st;
 	}
 }

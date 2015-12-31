@@ -33,7 +33,7 @@ public class Configuration {
 			"remote-exec-preconfig",
 			"remote-exec-postconfig",
 			"ssh-key-name",
-			"storm-deploy-alternative-jar-url"));
+			"storm-deploy-alternative-cloud-jar-url"));
 	
 	public static Configuration fromYamlFile(File f, String clustername) {
 		return new Configuration(Tools.readYamlConf(f), clustername);

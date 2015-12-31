@@ -32,7 +32,7 @@ public class StormDeployAlternative {
 	 */
 	public static List<Statement> runMemoryMonitor(String username) {
 		ArrayList<Statement> st = new ArrayList<Statement>();
-		st.add(exec("su -c 'java -cp \"/home/"+username+"/sda/storm-deploy-alternative.jar:$( find `ls -d /usr/lib/jvm/* | sort -k1 -r` -name tools.jar | head -1 )\" dk.kaspergsm.stormdeploy.image.MemoryMonitor &' - " + username));
+		st.add(exec("su -c 'java -cp \"/home/"+username+"/sda/storm-deploy-alternative-cloud.jar:$( find `ls -d /usr/lib/jvm/* | sort -k1 -r` -name tools.jar | head -1 )\" dk.kaspergsm.stormdeploy.image.MemoryMonitor &' - " + username));
 		return st;
 	}
 	

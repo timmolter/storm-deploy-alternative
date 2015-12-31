@@ -1,0 +1,13 @@
+#
+# Amazon EC2 example cluster configuration
+#
+mycluster:
+    - storm-version "0.9.3"					# Version of Storm
+    - zk-version "3.4.6"					# Version of Zookeeper
+    - image "us-west-2/ami-c94856a8"		# Ubuntu 14.04 LTS AMI
+    - region "us-west-2"					# Region
+    - t2.micro {ZK, WORKER, MASTER, UI}		# Request service
+    - remote-exec-preconfig {cd ~, echo hey > hey.txt}
+    - remote-exec-postconfig {}
+    - ssh-key-name "ec2"
+    - storm-deploy-alternative-cloud-jar-url "https://s3-us-west-2.amazonaws.com/knowm-sda/storm-deploy-alternative-cloud.jar"

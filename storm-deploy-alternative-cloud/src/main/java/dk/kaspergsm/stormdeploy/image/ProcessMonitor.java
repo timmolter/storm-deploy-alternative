@@ -11,7 +11,7 @@ import java.util.TimerTask;
  * Is used to monitor a process, and restart as necessary.
  * 
  * Can be executed by:
- * java -cp storm-deploy-alternative.jar dk.kaspergsm.stormdeploy.image.ProcessMonitor 
+ * java -cp storm-deploy-alternative-cloud.jar dk.kaspergsm.stormdeploy.image.ProcessMonitor 
  * 
  * @author Kasper Grud Skat Madsen
  */
@@ -66,7 +66,7 @@ public class ProcessMonitor {
         String s = null;
         while ((s = i.readLine()) != null) {
           System.out.println("  s: " + s);
-        	if (s.contains(_process) && !s.contains("storm-deploy-alternative.jar")) // filter the monitoring process
+        	if (s.contains(_process) && !s.contains("storm-deploy-alternative-cloud.jar")) // filter the monitoring process
         		return true;
         }
         

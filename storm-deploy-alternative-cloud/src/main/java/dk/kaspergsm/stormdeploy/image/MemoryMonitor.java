@@ -21,7 +21,7 @@ import com.sun.tools.attach.VirtualMachine;
  * 	This is needed to ensure all java processes give back their unused memory when needed.
  * 
  * can be executed by:
- * java -cp "storm-deploy-alternative.jar:/usr/lib/jvm/java-7-openjdk-amd64/lib/tools.jar" dk.kaspergsm.stormdeploy.image.MemoryMonitor
+ * java -cp "storm-deploy-alternative-cloud.jar:/usr/lib/jvm/java-7-openjdk-amd64/lib/tools.jar" dk.kaspergsm.stormdeploy.image.MemoryMonitor
  * 
  * @author Kasper Grud Skat Madsen
  */
