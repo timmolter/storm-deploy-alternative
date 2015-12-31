@@ -68,15 +68,6 @@
 
 	<build>
 	    <finalName>storm-deploy-alternative</finalName>
-		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>src</directory>
-				<includes>
-					<include>log4j.properties</include>
-				</includes>
-			</resource>
-		</resources>
 
 		<plugins>
 			<plugin>
