@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-	<groupId>dk.kaspergsm.stormdeploy</groupId>
-	<artifactId>storm-deploy-alternative</artifactId>
-	<version>1</version>
+		<groupId>dk.kaspergsm.stormdeploy</groupId>
+		<artifactId>storm-deploy-alternative</artifactId>
+		<version>1</version>
 	</parent>
 
 	<artifactId>storm-deploy-alternative-cloud</artifactId>
@@ -13,13 +13,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.commons</groupId> -->
-<!-- 			<artifactId>commons-exec</artifactId> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
@@ -29,7 +25,7 @@
 	</dependencies>
 
 	<build>
-	    <finalName>storm-deploy-alternative-cloud</finalName>
+		<finalName>storm-deploy-alternative-cloud</finalName>
 
 		<plugins>
 			<plugin>

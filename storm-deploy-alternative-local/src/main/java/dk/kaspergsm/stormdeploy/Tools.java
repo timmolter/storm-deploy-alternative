@@ -116,8 +116,6 @@ public class Tools {
 	 */
 	public static void executeOnNodes(List<Statement> commands, boolean runAsRoot, String clustername, ComputeService compute, String username, String sshKeyName) throws RunScriptOnNodesException, InterruptedException, ExecutionException, TimeoutException {
 	
-	  System.out.println("Running setup!");
-	  
 	  compute.runScriptOnNodesMatching(
 				NodePredicates.runningInGroup(clustername),
 				new StatementList(commands),

@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Is used to monitor a process, and restart as necessary.
  * 
@@ -16,6 +19,9 @@ import java.util.TimerTask;
  * @author Kasper Grud Skat Madsen
  */
 public class ProcessMonitor {
+  
+  private final static Logger logger = LoggerFactory.getLogger(ProcessMonitor.class);
+
 	private static final long _daemonStartTime = 300000; // 5 minutes in milliseconds
 	private static long _startDaemonTs;
 	private static String[] _toExec;
@@ -33,12 +39,12 @@ public class ProcessMonitor {
 		
 		// Parse
 		_process = args[0].replaceAll("\"", "");
-		System.out.println("_process= "+ _process);
+		logger.debug("_process= "+ _process);
 		_toExec = new String[args.length - 1];
     for (int i = 1; i < args.length; i++){
 			_toExec[i-1] = args[i].replaceAll("\"", "");
     }
-    System.out.println("_toExec= "+ Arrays.toString(_toExec));
+    logger.debug("_toExec= "+ Arrays.toString(_toExec));
 
 		// Schedule work
 		t = new Timer();
@@ -47,6 +53,7 @@ public class ProcessMonitor {
 			public void run() {
 				try {
 					if (!isRunning()) {
+					  System.out.println("Executing...");
 						Runtime.getRuntime().exec(_toExec);
 						_startDaemonTs = System.currentTimeMillis();
 					}
@@ -65,17 +72,21 @@ public class ProcessMonitor {
         // read the output from the command
         String s = null;
         while ((s = i.readLine()) != null) {
-          System.out.println("  s: " + s);
-        	if (s.contains(_process) && !s.contains("storm-deploy-alternative-cloud.jar")) // filter the monitoring process
+          logger.trace("   s: " + s);
+        	if (s.contains(_process) && !s.contains("storm-deploy-alternative-cloud.jar")){ // filter the monitoring process
+        	  logger.trace("   true");
         		return true;
+        	}
         }
         
         // Only if more than _initialStartup has passed, return false
         // It is imperative the daemons gets enough time to start!
         long passedTimeSinceDaemonLaunch = System.currentTimeMillis() - _startDaemonTs;
         if (passedTimeSinceDaemonLaunch >= _daemonStartTime){
+          logger.trace("   false");
         	return false;
         }
+        logger.trace("   true");
         return true;
 	}
 }

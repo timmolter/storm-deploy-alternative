@@ -101,9 +101,9 @@ public class Storm {
 		return st;
 	}
 	
-    /**
-     * Uses Monitor to restart daemon, if it stops
-     */
+  /**
+   * Uses Monitor to restart daemon, if it stops
+   */
 	public static List<Statement> startLogViewerDaemonSupervision(String username) {
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		st.add(exec("cd ~"));
