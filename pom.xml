@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>dk.kaspergsm.stormdeploy</groupId>
-	<artifactId>storm-deploy-alternative</artifactId>	
+	<artifactId>storm-deploy-alternative</artifactId>
 	<version>1</version>
 	<packaging>jar</packaging>
 
@@ -12,59 +12,62 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jclouds.version>1.9.1</jclouds.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.jclouds</groupId>
 			<artifactId>jclouds-all</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.5</version>
-		</dependency>  
+		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-log4j</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-slf4j</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-sshj</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-bouncycastle</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jclouds.driver</groupId>
 			<artifactId>jclouds-enterprise</artifactId>
-			<version>1.9.1</version>
+			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-exec</artifactId>
 			<version>1.2</version>
 		</dependency>
- 		<dependency>
-                        <groupId>com.sun</groupId>
-                        <artifactId>tools</artifactId>
-                        <version>1.6.0</version>
-                        <scope>system</scope>
-                        <systemPath>${java.home}/../lib/tools.jar</systemPath>
-                </dependency> 
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.6.0</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
+	    <finalName>storm-deploy-alternative</finalName>
 		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
@@ -79,15 +82,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.4.2</version>
 				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
 					<transformers>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<manifestEntries>
 								<Main-Class>dk.kaspergsm.stormdeploy.StormDeployAlternative</Main-Class>
 							</manifestEntries>
 						</transformer>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 					</transformers>
 
 					<filters>
@@ -102,32 +108,22 @@
 					</filters>
 				</configuration>
 				<executions>
-			  		<execution>
-			    		<phase>package</phase>
-			    		<goals>
-			      			<goal>shade</goal>
-			    		</goals>
-			  	</execution>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
 				</executions>
-		      	</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.10</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
 				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
