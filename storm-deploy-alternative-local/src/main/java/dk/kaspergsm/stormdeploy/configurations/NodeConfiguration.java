@@ -15,6 +15,7 @@ import dk.kaspergsm.stormdeploy.userprovided.Credential;
 public class NodeConfiguration {
 	
 	public static List<Statement> getCommands(String clustername, Credential credentials, Configuration config, List<String> zookeeperHostnames, List<String> drpcHostnames, String nimbusHostname, String uiHostname) {
+	  
 		List<Statement> commands = new ArrayList<Statement>();
 		
 		// Install system tools, Java, etc.
@@ -27,18 +28,8 @@ public class NodeConfiguration {
 		// but there are no docs yet and I've wasted too much time messing with already.
 		commands.addAll(AWSCredentials.configure(config.getDeploymentLocation(), credentials.get_ec2_identity(), credentials.get_ec2_credential()));
 		
-		// Install and configure s3cmd (to allow communication with Amazon S3)
-		commands.addAll(S3CMD.install(PACKAGE_MANAGER.APT));
-		commands.addAll(S3CMD.configure(credentials.get_ec2_identity(), credentials.get_ec2_credential()));
-		
-		// Install and configure ec2-ami-tools (only if optional x509 credentials have been defined)
-		if (credentials.get_ec2_X509CertificatePath() != null && credentials.get_ec2_X509CertificatePath().length() > 0 && credentials.get_ec2_X509PrivateKeyPath() != null && credentials.get_ec2_X509PrivateKeyPath().length() > 0) {
-			commands.addAll(EC2Tools.install(PACKAGE_MANAGER.APT));
-			commands.addAll(EC2Tools.configure(credentials.get_ec2_X509CertificatePath(), credentials.get_ec2_X509PrivateKeyPath(), config.getDeploymentLocation(), clustername));
-		}
-		
 		// Download and configure storm-deploy-alternative (before anything with supervision is started)
-    commands.addAll(StormDeployAlternative.download(config.getSDACloudJarLocation()));
+    commands.addAll(StormDeployAlternative.download(config.getSDACloudJarLocation(), config.getImageUsername()));
 		commands.addAll(StormDeployAlternative.writeConfigurationFilesToRemote(Tools.getWorkDir() + "conf" + File.separator + "configuration.yaml", Tools.getWorkDir() + "conf" + File.separator + "credential.yaml"));
 		commands.addAll(StormDeployAlternative.writeLocalSSHKeysToRemote(config.getSSHKeyName()));
 		
@@ -85,8 +76,9 @@ public class NodeConfiguration {
 		 * 	requires StormDeployAlternative is installed remotely
 		 *  and user has specified he wants it running
 		 */
-		if (config.executeMemoryMonitor())
+		if (config.executeMemoryMonitor()){
 			commands.addAll(StormDeployAlternative.runMemoryMonitor(config.getImageUsername()));
+		}
 		
 		// Return commands
 		return commands;

@@ -1,6 +1,5 @@
 package dk.kaspergsm.stormdeploy.commands;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.RunScriptOnNodesException;
@@ -16,10 +16,10 @@ import org.jclouds.compute.domain.NodeMetadata;
 import org.jclouds.compute.domain.NodeMetadata.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import dk.kaspergsm.stormdeploy.LaunchNodeThread;
 import dk.kaspergsm.stormdeploy.Tools;
 import dk.kaspergsm.stormdeploy.configurations.NodeConfiguration;
-import dk.kaspergsm.stormdeploy.configurations.Storm;
 import dk.kaspergsm.stormdeploy.userprovided.Configuration;
 import dk.kaspergsm.stormdeploy.userprovided.Credential;
 

@@ -46,6 +46,7 @@ import dk.kaspergsm.stormdeploy.userprovided.Configuration;
 import dk.kaspergsm.stormdeploy.userprovided.Credential;
 
 public class Tools {
+  
 	private static final String _workDir = System.getProperty("user.dir").endsWith("/") ? System.getProperty("user.dir") : System.getProperty("user.dir") + "/";
 	private static final String _homeDir = System.getProperty("user.home").endsWith("/") ? System.getProperty("user.home") : System.getProperty("user.home") + "/";
 	private static final Map<String, ProviderMetadata> _appProviders = Maps.uniqueIndex(Providers.viewableAs(ComputeServiceContext.class), Providers.idFunction());
@@ -92,6 +93,7 @@ public class Tools {
 	 * Initialize JClouds
 	 */
 	public static ComputeServiceContext initComputeServiceContext(Configuration conf, Credential cred) {
+	  
 		Properties properties = new Properties();
 		
 		// Max time a script can take to execute
@@ -104,8 +106,9 @@ public class Tools {
 		properties.setProperty(Constants.PROPERTY_MAX_CONNECTIONS_PER_HOST, "5");
 		properties.setProperty(Constants.PROPERTY_MAX_CONNECTIONS_PER_CONTEXT, "20");
 		properties.setProperty(Constants.PROPERTY_MAX_CONNECTION_REUSE, "10");
-		properties.setProperty(Constants.PROPERTY_MAX_RETRIES, "999999");
-		
+    properties.setProperty(Constants.PROPERTY_MAX_RETRIES, "999999");
+    
+    
 		// inject ssh implementation
 		Iterable<Module> modules = ImmutableSet.<Module> of(new SshjSshClientModule(), new SLF4JLoggingModule(), new EnterpriseConfigurationModule());
 		return ContextBuilder.newBuilder("aws-ec2").credentials(cred.get_ec2_identity(), cred.get_ec2_credential()).modules(modules).overrides(properties).buildView(ComputeServiceContext.class);

@@ -26,12 +26,13 @@ import com.sun.tools.attach.VirtualMachine;
  * @author Kasper Grud Skat Madsen
  */
 class MemoryMonitor {
-	private static Logger log = LoggerFactory.getLogger(MemoryMonitor.class);
+	private static Logger logger = LoggerFactory.getLogger(MemoryMonitor.class);
 	
 	public static void main(String[] args) throws IOException {
-		log.info("Initialized MemoryMonitor");
-		log.info("Software for helping Java proceses share memory");
-		log.info("it works by invoking garbage collection on all Java processes as needed");
+	  
+		logger.info("Initialized MemoryMonitor");
+		logger.info("Software for helping Java proceses share memory");
+		logger.info("it works by invoking garbage collection on all Java processes as needed");
 		
 		while (true) {
 			try {
@@ -42,22 +43,22 @@ class MemoryMonitor {
 					// Calculate unused memory in %
 					double freeMemory = ((double)freeMem / (double)totalMem) * 100;
 					if (freeMemory < 10) {
-						log.info("Detected system has less than 10% free memory");
+						logger.info("Detected system has less than 10% free memory");
 						GCExternalProcesses(); // invoke gc on all java processes
 						sleep(10);
 					} else if (freeMemory < 20) {
-						log.info("Detected system has less than 20% free memory");
+						logger.info("Detected system has less than 20% free memory");
 						GCExternalProcesses(); // invoke gc on all java processes
 						sleep(30);
 					} else if (freeMemory < 40) {
-						log.info("Detected system has less than 40% free memory");
+						logger.info("Detected system has less than 40% free memory");
 						GCExternalProcesses(); // invoke gc on all java processes
 						sleep(60);
 					}
 				}
 				sleep(5);
 			} catch (Exception ex) {
-				log.error("Problem", ex);
+				logger.error("Problem", ex);
 			}
 		}
 	}
@@ -86,7 +87,7 @@ class MemoryMonitor {
             is.close();
     		process.waitFor();
         } catch (Exception ex) {
-        	log.error("Problem", ex);
+        	logger.error("Problem", ex);
             return null;
         }
 		return memTotal;
@@ -123,7 +124,7 @@ class MemoryMonitor {
             is.close();
     		process.waitFor();
         } catch (Exception ex) {
-        	log.error("Problem", ex);
+        	logger.error("Problem", ex);
             return null;
         }
 		
@@ -144,14 +145,14 @@ class MemoryMonitor {
             is.close();
     		process.waitFor();
         } catch (Exception ex) {
-        	log.error("Problem", ex);
+        	logger.error("Problem", ex);
         }
 		return javaProcesses;
 	}
 	
 	private static void GCExternalProcesses() {
 		for (String jvmPid : getAllJavaProcesses()) {
-			log.info("Requested process ( pid " + jvmPid + " ) to garbage collect");
+			logger.info("Requested process ( pid " + jvmPid + " ) to garbage collect");
 			GCExternalProcess(jvmPid);
 		}
 	}
@@ -177,7 +178,7 @@ class MemoryMonitor {
 			// Do GC
 			ManagementFactory.newPlatformMXBeanProxy(connector.getMBeanServerConnection(), ManagementFactory.MEMORY_MXBEAN_NAME, MemoryMXBean.class).gc();			
 		} catch (Exception ex) {
-			log.error("Problem", ex);
+			logger.error("Problem", ex);
 		}
 
 		// Detach from JVM process
@@ -187,7 +188,7 @@ class MemoryMonitor {
 			if (vm != null)
 				vm.detach();
 		} catch (Exception ex) {
-			log.error("Problem", ex);
+			logger.error("Problem", ex);
 		}
 	}
 }

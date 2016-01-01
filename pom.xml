@@ -34,11 +34,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.jclouds.driver</groupId>
-				<artifactId>jclouds-log4j</artifactId>
-				<version>${jclouds.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.jclouds.driver</groupId>
 				<artifactId>jclouds-slf4j</artifactId>
 				<version>${jclouds.version}</version>
 			</dependency>
