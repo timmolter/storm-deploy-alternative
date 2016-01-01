@@ -16,7 +16,7 @@ Full explanation of useage can be found at the following link: <http://knowm.org
 
 ## Configuration
 
-This tool, requires two configuration files: `conf/credential.yaml` and `conf/configuration.yaml`. Put your credentials into the file `conf/credential.yaml`. It's required that you have generated an SSH key-pair on your local machine in `~/.ssh` with an empty pass phrase.
+This tool, requires two configuration files: `storm-deploy-alternative-local/conf/credential.yaml` and `storm-deploy-alternative-local/conf/configuration.yaml`. Put your credentials into the file `conf/credential.yaml`. It's required that you have generated an SSH key-pair on your local machine in `~/.ssh` with an empty pass phrase.
 
 Below is an example of a single cluster configuration, for `conf/configuration.yaml`
 
