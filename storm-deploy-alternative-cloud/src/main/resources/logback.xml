@@ -18,7 +18,7 @@
 
 		<!-- Rollover daily or when the file size exceeds 100Mb and keep a few -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>log//storm-deploy-alternative-cloud-%d{yyyy-MM-dd}.%i.log.gz
+			<fileNamePattern>log/storm-deploy-alternative-cloud-%d{yyyy-MM-dd}.%i.log.gz
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -33,7 +33,7 @@
 
 	</appender>
 
-	<root level="INFO">
+	<root level="TRACE">
 		<appender-ref ref="CONSOLE_APPENDER" />
 		<appender-ref ref="DETAIL_APPENDER" />
 	</root>
