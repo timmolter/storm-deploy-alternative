@@ -20,6 +20,7 @@ public class SystemTools {
 	private static Logger log = LoggerFactory.getLogger(SystemTools.class);
 	
 	public static List<Statement> init(PACKAGE_MANAGER pm) {
+	  
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		if (pm == PACKAGE_MANAGER.APT) {
 			
@@ -39,19 +40,19 @@ public class SystemTools {
 			st.add(exec("update-alternatives --set java $JAVA_HOME/jre/bin/java"));
 			
 			// Install ant
-			st.add(exec("apt-get install -y ant"));
+//			st.add(exec("apt-get install -y ant"));
 			
 			// Install git
-			st.add(exec("apt-get install -y git"));
+//			st.add(exec("apt-get install -y git"));
 			
-			// Install build-tools
-			st.add(exec("apt-get install -y build-essential"));
-			st.add(exec("apt-get install -y uuid-dev"));
-			st.add(exec("apt-get install -y pkg-config"));
-			st.add(exec("apt-get install -y libtool"));
-			st.add(exec("apt-get install -y automake1.10"));
-			st.add(exec("apt-get install -y unzip"));
-			st.add(exec("update-alternatives --set automake /usr/bin/automake-1.10"));
+//			// Install build-tools
+//			st.add(exec("apt-get install -y build-essential"));
+//			st.add(exec("apt-get install -y uuid-dev"));
+//			st.add(exec("apt-get install -y pkg-config"));
+//			st.add(exec("apt-get install -y libtool"));
+//			st.add(exec("apt-get install -y automake1.10"));
+//			st.add(exec("apt-get install -y unzip"));
+//			st.add(exec("update-alternatives --set automake /usr/bin/automake-1.10"));
 			
 		} else {
 			log.error("PACKAGE MANAGER not supported: " + pm.toString());
