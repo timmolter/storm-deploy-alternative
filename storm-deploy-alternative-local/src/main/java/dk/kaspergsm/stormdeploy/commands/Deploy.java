@@ -59,26 +59,26 @@ public class Deploy {
 		HashMap<Integer, NodeMetadata> newNodes = startNodesNow(config, computeContext.getComputeService(), clustername);
 		
 		
-		/**
-		 * Write storm.yaml and supervisor.yaml files to local computer
-		 */
-		// TODO Is this necessary?
-		try {
-			log.info("Creating storm.yaml and supervisor.yaml files");
-			
-			String uiPublicAddress = "";
-			if (getUINode(config, newNodes) != null)
-				uiPublicAddress = getUINode(config, newNodes).getPublicAddresses().iterator().next();
-			
-			Storm.writeStormAttachConfigFiles(
-					getNewInstancesPublicIp(config, "ZK", newNodes), 
-					getNewInstancesPublicIp(config, "WORKER", newNodes), 
-					getNimbusNode(config, newNodes).getPublicAddresses().iterator().next(),
-					uiPublicAddress, 
-					clustername);
-		} catch (IOException ex) {
-			log.error("Creating storm.yaml and supervisor.yaml files", ex);
-		}
+//		/**
+//		 * Write storm.yaml and supervisor.yaml files to local computer
+//		 */
+//		// TODO Is this necessary?
+//		try {
+//			log.info("Creating storm.yaml and supervisor.yaml files");
+//			
+//			String uiPublicAddress = "";
+//			if (getUINode(config, newNodes) != null)
+//				uiPublicAddress = getUINode(config, newNodes).getPublicAddresses().iterator().next();
+//			
+//			Storm.writeStormAttachConfigFiles(
+//					getNewInstancesPublicIp(config, "ZK", newNodes), 
+//					getNewInstancesPublicIp(config, "WORKER", newNodes), 
+//					getNimbusNode(config, newNodes).getPublicAddresses().iterator().next(),
+//					uiPublicAddress, 
+//					clustername);
+//		} catch (IOException ex) {
+//			log.error("Creating storm.yaml and supervisor.yaml files", ex);
+//		}
 		
 		
 		/**

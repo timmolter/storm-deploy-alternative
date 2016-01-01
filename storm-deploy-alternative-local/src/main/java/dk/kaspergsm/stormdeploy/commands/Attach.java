@@ -1,15 +1,14 @@
 package dk.kaspergsm.stormdeploy.commands;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.domain.NodeMetadata;
 import org.jclouds.compute.domain.NodeMetadata.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dk.kaspergsm.stormdeploy.configurations.Storm;
 
 public class Attach {
 	private static Logger log = LoggerFactory.getLogger(Attach.class);
@@ -47,24 +46,24 @@ public class Attach {
 			}
 		}
 		
-		/**
-		 * Update attachment
-		 */
-		try {
-			String uiPublicAddress = "";
-			if (ui != null)
-				uiPublicAddress = ui.getPublicAddresses().iterator().next();
-			
-			Storm.writeStormAttachConfigFiles(
-					getInstancesPublicIp(zkNodes), 
-					getInstancesPublicIp(workerNodes), 
-					nimbus.getPublicAddresses().iterator().next(),
-					uiPublicAddress,
-					clustername);
-			log.info("Attached to cluster");
-		} catch (IOException ex) {
-			log.error("Problem attaching to cluster", ex);
-		}
+//		/**
+//		 * Update attachment
+//		 */
+//		try {
+//			String uiPublicAddress = "";
+//			if (ui != null)
+//				uiPublicAddress = ui.getPublicAddresses().iterator().next();
+//			
+//			Storm.writeStormAttachConfigFiles(
+//					getInstancesPublicIp(zkNodes), 
+//					getInstancesPublicIp(workerNodes), 
+//					nimbus.getPublicAddresses().iterator().next(),
+//					uiPublicAddress,
+//					clustername);
+//			log.info("Attached to cluster");
+//		} catch (IOException ex) {
+//			log.error("Problem attaching to cluster", ex);
+//		}
 	}
 	
 	private static List<String> getInstancesPublicIp(ArrayList<NodeMetadata> nodes) {

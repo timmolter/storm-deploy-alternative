@@ -28,6 +28,7 @@ public class Storm {
 	 * Write storm/conf/storm.yaml (basic settings only)
 	 */
 	public static List<Statement> configure(String hostname, List<String> zkNodesHostname, List<String> drpcHostname, String userName) {
+	  
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		st.add(exec("cd ~/storm/conf/"));
 		st.add(exec("touch storm.yaml"));
@@ -111,45 +112,45 @@ public class Storm {
 		return st;
 	}
 	
-	/**
-	 * Used to write config files to $HOME/.storm/ on local machine
-	 * These are needed for the storm script to know where to submit topologies etc.
-	 */
-	// TODO Try removing this and see what happens
-	public static void writeStormAttachConfigFiles(List<String> zookeeperNodesHostname, List<String> supervisorNodesHostname, String nimbusHost, String uiHost, String clustername) throws IOException {
-		String userHome = Tools.getHomeDir();
-		new File(userHome + ".storm").mkdirs();
-		
-		// Write $HOME/.storm/storm.yaml
-		FileWriter stormYaml = new FileWriter(userHome + ".storm/storm.yaml", false);
-		stormYaml.append("storm.zookeeper.servers:\n");
-		for (String zookeeperNode : zookeeperNodesHostname) {
-			stormYaml.append("    - \"");
-			stormYaml.append(zookeeperNode);
-			stormYaml.append("\"\n");
-		}
-		stormYaml.append("nimbus.host: \"");
-		stormYaml.append(nimbusHost);
-		stormYaml.append("\"\n");
-		stormYaml.append("ui.host: \"");
-		stormYaml.append(uiHost);
-		stormYaml.append("\"\n");
-		stormYaml.append("cluster: \"");
-		stormYaml.append(clustername);
-		stormYaml.append("\"\n");
-		
-		stormYaml.flush();
-		stormYaml.close();
-		
-		// Write $HOME/.storm/supervisor.yaml
-		FileWriter supervisorYaml = new FileWriter(userHome + ".storm/supervisor.yaml", false);
-		supervisorYaml.append("storm.supervisor.servers:\n");
-		for (String supervisorNode : supervisorNodesHostname) {
-			supervisorYaml.append("    - \"");
-			supervisorYaml.append(supervisorNode);
-			supervisorYaml.append("\"\n");
-		}
-		supervisorYaml.flush();
-		supervisorYaml.close();
-	}
+//	/**
+//	 * Used to write config files to $HOME/.storm/ on local machine
+//	 * These are needed for the storm script to know where to submit topologies etc.
+//	 */
+//	// TODO Try removing this and see what happens
+//	public static void writeStormAttachConfigFiles(List<String> zookeeperNodesHostname, List<String> supervisorNodesHostname, String nimbusHost, String uiHost, String clustername) throws IOException {
+//		String userHome = Tools.getHomeDir();
+//		new File(userHome + ".storm").mkdirs();
+//		
+//		// Write $HOME/.storm/storm.yaml
+//		FileWriter stormYaml = new FileWriter(userHome + ".storm/storm.yaml", false);
+//		stormYaml.append("storm.zookeeper.servers:\n");
+//		for (String zookeeperNode : zookeeperNodesHostname) {
+//			stormYaml.append("    - \"");
+//			stormYaml.append(zookeeperNode);
+//			stormYaml.append("\"\n");
+//		}
+//		stormYaml.append("nimbus.host: \"");
+//		stormYaml.append(nimbusHost);
+//		stormYaml.append("\"\n");
+//		stormYaml.append("ui.host: \"");
+//		stormYaml.append(uiHost);
+//		stormYaml.append("\"\n");
+//		stormYaml.append("cluster: \"");
+//		stormYaml.append(clustername);
+//		stormYaml.append("\"\n");
+//		
+//		stormYaml.flush();
+//		stormYaml.close();
+//		
+//		// Write $HOME/.storm/supervisor.yaml
+//		FileWriter supervisorYaml = new FileWriter(userHome + ".storm/supervisor.yaml", false);
+//		supervisorYaml.append("storm.supervisor.servers:\n");
+//		for (String supervisorNode : supervisorNodesHostname) {
+//			supervisorYaml.append("    - \"");
+//			supervisorYaml.append(supervisorNode);
+//			supervisorYaml.append("\"\n");
+//		}
+//		supervisorYaml.flush();
+//		supervisorYaml.close();
+//	}
 }
