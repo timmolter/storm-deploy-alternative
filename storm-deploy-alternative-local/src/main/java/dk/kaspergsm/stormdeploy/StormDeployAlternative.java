@@ -1,13 +1,13 @@
 package dk.kaspergsm.stormdeploy;
 
 import java.io.File;
+
 import org.jclouds.compute.ComputeServiceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dk.kaspergsm.stormdeploy.commands.Attach;
+
 import dk.kaspergsm.stormdeploy.commands.Deploy;
 import dk.kaspergsm.stormdeploy.commands.Kill;
-import dk.kaspergsm.stormdeploy.commands.ScaleOutCluster;
 import dk.kaspergsm.stormdeploy.userprovided.Configuration;
 import dk.kaspergsm.stormdeploy.userprovided.Credential;
 
@@ -79,21 +79,6 @@ public class StormDeployAlternative {
 		if (operation.trim().equalsIgnoreCase("deploy")) {
 
 			Deploy.deploy(clustername, credentials, config, computeContext);
-
-		} else if (operation.trim().equalsIgnoreCase("scaleout")) {
-
-			try {
-				int newNodes = Integer.valueOf(args[2]);
-				String instanceType = args[3];
-				ScaleOutCluster.AddWorkers(newNodes, clustername, instanceType, config, credentials, computeContext);
-			} catch (Exception ex) {
-				log.error("Error parsing arguments", ex);
-				return;
-			}
-
-		} else if (operation.trim().equalsIgnoreCase("attach")) {
-
-			Attach.attach(clustername, computeContext);
 
 		} else if (operation.trim().equalsIgnoreCase("kill")) {
 
