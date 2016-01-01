@@ -2,8 +2,6 @@
 .classpath
 .project
 .settings
-conf/configuration.yaml
-conf/credential.yaml
+storm-deploy-alternative-local/conf/configuration.yaml
+storm-deploy-alternative-local/conf/credential.yaml
 dependency-reduced-pom.xml
-memory-monitor.log
-/bin/
