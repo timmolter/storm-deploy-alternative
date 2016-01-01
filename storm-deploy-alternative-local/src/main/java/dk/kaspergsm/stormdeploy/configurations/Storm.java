@@ -27,25 +27,25 @@ public class Storm {
 	/**
 	 * Write storm/conf/storm.yaml (basic settings only)
 	 */
-	public static List<Statement> configure(String hostname, List<String> zkNodesHostname, List<String> drpcHostname, String userName) {
+	public static List<Statement> configure(String nimbusHostname, List<String> zkNodesHostname, List<String> drpcHostname, String userName) {
 	  
 		ArrayList<Statement> st = new ArrayList<Statement>();
 		st.add(exec("cd ~/storm/conf/"));
 		st.add(exec("touch storm.yaml"));
 		
 		// Add nimbus.host
-		st.add(exec("echo nimbus.host: \"" + hostname + "\" >> storm.yaml"));
+		st.add(exec("echo nimbus.host: \"" + nimbusHostname + "\" >> storm.yaml"));
 		
 		// Add storm.zookeeper.servers
 		st.add(exec("echo storm.zookeeper.servers: >> storm.yaml"));
 		for (int i = 1; i <= zkNodesHostname.size(); i++)
-			st.add(exec("echo - \"" + zkNodesHostname.get(i-1) + "\" >> storm.yaml"));
+			st.add(exec("echo   - \"" + zkNodesHostname.get(i-1) + "\" >> storm.yaml"));
 
 		// Add drpc.servers
 		if (drpcHostname.size() > 0) {
 			st.add(exec("echo drpc.servers: >> storm.yaml"));
 			for (int i = 1; i <= drpcHostname.size(); i++)
-				st.add(exec("echo - \"" + drpcHostname.get(i-1) + "\" >> storm.yaml"));
+				st.add(exec("echo   - \"" + drpcHostname.get(i-1) + "\" >> storm.yaml"));
 		}
 
 		// Add supervisor metadata
