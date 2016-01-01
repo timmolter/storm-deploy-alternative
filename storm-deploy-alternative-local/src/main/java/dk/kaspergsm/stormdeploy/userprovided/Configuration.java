@@ -19,14 +19,20 @@ import dk.kaspergsm.stormdeploy.Tools;
  * @author Kasper Grud Skat Madsen
  */
 public class Configuration {
+  
 	private static Logger log = LoggerFactory.getLogger(Configuration.class);
+	
 	HashMap<Integer, String> _nodeIdToInstanceTypeID = null;
-	private String _imageID = null, _locationID = null;
+  private String _imageID = null;
+  private String  _locationID = null;
+  private String  _stormTarGzUrl = null;
+  private String  _zookeeperTarGzUrl = null;
+  private String  _stormDeployAlternativeCloudJarUrl = null;
 	private ArrayList<String> _conf;
 	
 	private Set<String> _allConfigurationSettings = new HashSet<String>(Arrays.asList(
-			"storm-version", 
-			"zk-version",
+			"storm-tar-gz-url", 
+			"zk-tar-gz-url",
 			"image","image-username",
 			"region",
 			"memory-monitor",
@@ -131,43 +137,25 @@ public class Configuration {
 		return getRawConfigValue("image");
 	}
 	
+  /**
+   * Get remote URL of Storm 
+   */
+  public String getStormRemoteLocation() {
+    if (_stormTarGzUrl != null) {
+      return _stormTarGzUrl;
+    }
+    return getRawConfigValue("storm-tar-gz-url");
+  }
+  
 	/**
-	 * Get remote zk-location, based on requested version
-	 */
-	public String getZKLocation() {
-		String version = getRawConfigValue("zk-version");
-		if (version.equals("3.4.5")) {
-			return "https://s3-eu-west-1.amazonaws.com/zk-releases/zookeeper-3.4.5.tar.gz";
-		} else if (version.equals("3.4.6")) {
-			return "https://s3-eu-west-1.amazonaws.com/zk-releases/zookeeper-3.4.6.tar.gz";
-		} else {
-			log.info("Zookeeper version not currently supported!");
-		}
-		return null;
-	}
-	
-	/**
-	 * Get remote location of Storm, based on requested version 
-	 */
-	public String getStormRemoteLocation() {
-		String version = getRawConfigValue("storm-version");
-		if (version.equals("0.8.2")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/storm-0.8.2.tar.gz";
-		} else if (version.equals("0.9.0.1")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/storm-0.9.0.1.tar.gz";
-		} else if (version.equals("0.9.2")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/apache-storm-0.9.2-incubating.tar.gz";
-		} else if (version.equals("0.9.3")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/apache-storm-0.9.3.tar.gz";
-		} else if (version.equals("0.9.4")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/apache-storm-0.9.4.tar.gz";
-		} else if (version.equals("0.9.5")) {
-			return "https://s3-eu-west-1.amazonaws.com/storm-releases/apache-storm-0.9.5.tar.gz";
-		} else {
-			log.info("Storm version " + version + " not currently supported!");
-		}
-		return null;
-	}
+   * Get remote URL of Zookeeper 
+   */
+  public String getZookeeperRemoteLocation() {
+    if (_zookeeperTarGzUrl != null) {
+      return _zookeeperTarGzUrl;
+    }
+    return getRawConfigValue("zk-tar-gz-url");
+  }
 	
 	/**
 	 * Get the ssh key pair name
@@ -183,11 +171,11 @@ public class Configuration {
 	}
 	
 	 /**
-   * Get region
+   * Get stormDeployAlternativeCloudJarUrl
    */
   public String getSDACloudJarLocation() {
-    if (_locationID != null) {
-      return _locationID;
+    if (_stormDeployAlternativeCloudJarUrl != null) {
+      return _stormDeployAlternativeCloudJarUrl;
     }
     return getRawConfigValue("storm-deploy-alternative-cloud-jar-url");
   }
@@ -205,6 +193,7 @@ public class Configuration {
 	 * Get map{node id, instanceType}
 	 */
 	public HashMap<Integer, String> getNodeIdToInstanceType() {
+	  
 		if (_nodeIdToInstanceTypeID != null) {
 			return _nodeIdToInstanceTypeID;
 		}
@@ -226,6 +215,7 @@ public class Configuration {
 	 * Get map{node id, zkid}
 	 */
 	public HashMap<Integer, Integer> getNodeIdToZkId() {
+	  
 		int zkid = 1;
 		HashMap<Integer, Integer> nodeIdToZkId = new HashMap<Integer, Integer>();
 		for (int nodeId = 0; nodeId < _conf.size(); nodeId++) {
@@ -244,6 +234,7 @@ public class Configuration {
 	 * Get map{arr[daemons], arr[node ids]}
 	 */
 	public HashMap<ArrayList<String>, ArrayList<Integer>> getDaemonsToNodeIds() {
+	  
 		HashMap<String, ArrayList<Integer>> deamonsToNodeIds = new HashMap<String, ArrayList<Integer>>();
 		for (int i = 0; i < _conf.size(); i++) {
 			if (_allConfigurationSettings.contains(_conf.get(i).substring(0, _conf.get(i).indexOf(" "))))

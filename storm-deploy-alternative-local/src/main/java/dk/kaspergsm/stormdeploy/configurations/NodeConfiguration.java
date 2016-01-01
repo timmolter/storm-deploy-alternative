@@ -46,7 +46,7 @@ public class NodeConfiguration {
 		commands.addAll(Storm.download(config.getStormRemoteLocation()));
 		
 		// Download Zookeeper
-		commands.addAll(Zookeeper.download(config.getZKLocation()));
+		commands.addAll(Zookeeper.download(config.getZookeeperRemoteLocation()));
 		
 		// Download Ganglia
 		commands.addAll(Ganglia.install());
