@@ -2,7 +2,7 @@
 
 Fast tool to deploy [Storm](https://github.com/apache/storm) on [Amazon EC2](http://aws.amazon.com/ec2/), written entirely in Java.
 
-Note that this is a heavily-modified fork of [storm-deploy-alternative](https://github.com/KasperMadsen/storm-deploy-alternative). The main difference is that this fork removes a lot of unnecessary code and dependencies, allows the user to choose the download location of of `storm`, `zookeeper`, and `storm-deploy-alternative-cluster` jar. This fork also splits the code base into two modules, `storm-deploy-alternative-local` and `storm-deploy-alternative-cloud`, in order to separate the logic and keep the necessary cloud jar size minimal. 
+Note that this is a heavily-modified fork of [storm-deploy-alternative](https://github.com/KasperMadsen/storm-deploy-alternative). The main difference is that this fork removes a lot of unnecessary code and dependencies, allows the user to choose the download location of of `storm`, `zookeeper`, and `storm-deploy-alternative-cluster` jar. This fork also splits the code base into two modules, `storm-deploy-alternative-local` and `storm-deploy-alternative-cloud`, in order to separate the logic and keep the necessary cloud jar size minimal. Another motivation for the fork is that the `storm`, `zookeeper`, and `storm-deploy-alternative-cluster` binaries are pulled from a private s3 instance via hard-coded URLs, and there is no guarantee that they will always be available. This fork allows you to configure where the binaries are downloaded from.
 
 Full explanation of useage can be found at the following link: <http://knowm.org/how-to-deploy-an-apache-storm-cluster-to-the-amazon-elastic-compute-cloud-ec2/>.
 
@@ -60,7 +60,7 @@ ec2-credential: "YIO7jgjhg987qKgRfFJuke958mmGwrPsgsd"
 
 ## Usage
 
-After cloning the repo via `git`, build the project with `Maven` with the command: `mvn clean package`. Two jars will be produced: `storm-deploy-alternative-local/target/storm-deploy-alternative-local.jar` and `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar`. You need to upload `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar` to some location on the web accessible by your cluster instances via `wget`. You own S3 bucket would be a logical location. Update the `configuration.yaml` entry, `storm-deploy-alternative-cloud-jar-url`, accordingly.
+After cloning the repo via `git`, build the project with `Maven` with the command: `mvn clean package`. Two jars will be produced: `storm-deploy-alternative-local/target/storm-deploy-alternative-local.jar` and `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar`. You need to upload `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar` to some location on the web accessible by your cluster instances via `wget`. Your own S3 bucket would be a logical location. Update the `configuration.yaml` entry, `storm-deploy-alternative-cloud-jar-url`, accordingly.
 
 
 ### Deploy
