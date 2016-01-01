@@ -11,6 +11,6 @@ ectwo:
     - remote-exec-preconfig {cd ~, echo hey > hey.txt}
     - remote-exec-postconfig {}
     - ssh-key-name "mySSHKeyName"           # Optional. defaults to "id_rsa"
-    - storm-deploy-alternative-cloud-jar-url "https://s3-eu-west-1.amazonaws.com/storm-deploy-alternative-cloud.jar"
+    - storm-deploy-alternative-cloud-jar-url "https://s3-us-west-2.amazonaws.com/your-bucket/storm-deploy-alternative-cloud.jar"
     - storm-tar-gz-url "http://mirror.yannic-bonenberger.com/apache/storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz" # https://storm.apache.org/downloads.html
     - zk-tar-gz-url "http://apache.lauf-forum.at/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz" # https://www.apache.org/dyn/closer.cgi/zookeeper/

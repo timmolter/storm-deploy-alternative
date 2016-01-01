@@ -1,34 +1,44 @@
-Fast tool to deploy [Storm](https://github.com/apache/incubator-storm) on [Amazon EC2](http://aws.amazon.com/ec2/), written entirely in Java.
+## Storm-Deploy-Alternative Fork
 
-_Please don't hesitate to contact me. Your feedback will help to further improve this tool._
+Fast tool to deploy [Storm](https://github.com/apache/storm) on [Amazon EC2](http://aws.amazon.com/ec2/), written entirely in Java.
+
+Note that this is a heavily-modified fork of [storm-deploy-alternative](https://github.com/KasperMadsen/storm-deploy-alternative). The main difference is that this fork removes a lot of unnecessary code and dependencies, allows the user to choose the download location of of `storm`, `zookeeper`, and `storm-deploy-alternative-cluster` jar. This fork also splits the code base into two modules, `storm-deploy-alternative-local` and `storm-deploy-alternative-cloud`, in order to separate the logic and keep the necessary cloud jar size minimal. 
+
+Full explanation of useage can be found at the following link: <http://knowm.org/how-to-deploy-an-apache-storm-cluster-to-the-amazon-elastic-compute-cloud-ec2/>.
 
 ## Features
+
 + Runs Storm and Zookeeper daemons under supervision (automatically restarted in case of failure)
 + Only fetch and compile what is needed (can deploy on prepared images in a few minutes)
 + Supports executing user-defined commands both pre-config and post-config
-+ Automatically sets up s3cmd, making it easy to get/put files on [Amazon S3](http://aws.amazon.com/s3/)
 + Automatically sets up [Ganglia](http://ganglia.sourceforge.net/), making it easy to monitor performance
 + Automatically sets up [Amazon EC2 AMI Tools](http://docs.aws.amazon.com/AWSEC2/latest/CommandLineReference/ami-tools.html) on new nodes
-+ Supports Zookeeper versions: _3.4.5_ & _3.4.6_
-+ Supports Storm versions: _0.8.2_ & _0.9.0.1_ & _0.9.2_ & _0.9.3_ & _0.9.4_ & _0.9.5_
 
 ## Configuration
-This tool, requires two configurationfiles: `conf/credential.yaml` and `conf/configuration.yaml`. Put your credentials into the file `conf/credential.yaml`. It's required that you have generated an SSH key-pair in `~/.ssh` with an empty pass phrase.
+
+This tool, requires two configuration files: `conf/credential.yaml` and `conf/configuration.yaml`. Put your credentials into the file `conf/credential.yaml`. It's required that you have generated an SSH key-pair on your local machine in `~/.ssh` with an empty pass phrase.
 
 Below is an example of a single cluster configuration, for `conf/configuration.yaml`
 
 ```
+#
+# Amazon EC2 example cluster configuration
+#
 mycluster:
-    - m1.medium {ZK, WORKER, MASTER, UI}
-    - m1.medium {WORKER}
-    - storm-version "0.9.5"
-    - zk-version "3.4.6"
-    - image "eu-west-1/ami-97344ae0" 	#official Ubuntu 14.04 LTS AMI
-    - region "eu-west-1"
-    - remote-exec-preconfig {cd ~, echo hey > hey.txt}
+    - image "us-west-2/ami-c94856a8"        # Ubuntu 14.04 LTS AMI
+    - region "us-west-2"                    # Region
+    - remote-exec-preconfig {}
     - remote-exec-postconfig {}
-    - ssh-key-name "mySSHKeyName"           # Optional. defaults to "id_rsa"
+    - ssh-key-name "ec2"     # Optional. defaults to "id_rsa"
+    - storm-deploy-alternative-cloud-jar-url "https://s3-us-west-2.amazonaws.com/your-bucket/storm-deploy-alternative-cloud.jar"
+    - storm-tar-gz-url "http://mirror.yannic-bonenberger.com/apache/storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz"
+    - zk-tar-gz-url "http://apache.lauf-forum.at/zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
+    - memory-monitor "false"
+    - t2.micro {ZK, WORKER, MASTER, UI, LOGVIEWER}      # Request service
+    - t2.micro {WORKER}      # Request service
+    - t2.micro {WORKER}      # Request service
 ```
+
 + MASTER is the Storm Nimbus daemon
 + WORKER is the Storm Supervisor daemon
 + UI is the Storm and Ganglia User-Interface
@@ -36,34 +46,35 @@ mycluster:
 + DRPC is the Storm DRPC daemon
 + ZK is the [Zookeeper](http://zookeeper.apache.org) daemon
 
-_Please ensure the image resides in the same region as specified._
+Ensure the image resides in the same region as specified. Choose a mirror download URL for [storm](https://storm.apache.org/downloads.html) and [zookeeper](https://www.apache.org/dyn/closer.cgi/zookeeper/) or put the files in your own S3 bucket and use those URLs.
+
+Below is an example of a single cluster configuration, for `conf/credential.yaml`
+
+```
+##
+## Amazon AWS Credentials
+##
+ec2-identity: "GDYTFC59KU6JKHJG"
+ec2-credential: "YIO7jgjhg987qKgRfFJuke958mmGwrPsgsd"
+```
 
 ## Usage
 
-### Deploy
-Execute `java -jar storm-deploy-alternative.jar deploy CLUSTER_NAME`
+After cloning the repo via `git`, build the project with `Maven` with the command: `mvn clean package`. Two jars will be produced: `storm-deploy-alternative-local/target/storm-deploy-alternative-local.jar` and `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar`. You need to upload `storm-deploy-alternative-cloud/target/storm-deploy-alternative-cloud.jar` to some location on the web accessible by your cluster instances via `wget`. You own S3 bucket would be a logical location. Update the `configuration.yaml` entry, `storm-deploy-alternative-cloud-jar-url`, accordingly.
 
-After successful deployment, a small file is written to $HOME/.storm/, which allows you to interact with the cluster directly from the bin/storm script. For details on how to use the bin/storm script, please refer to the [Storm wiki](https://github.com/nathanmarz/storm/wiki).
+
+### Deploy
+
+Execute `java -jar storm-deploy-alternative-local/target/storm-deploy-alternative-local.jar deploy CLUSTER_NAME`
+
+Deploys all nodes belonging in the cluster with name CLUSTER_NAME.
 
 ### Kill
-Execute `java -jar storm-deploy-alternative.jar kill CLUSTER_NAME`
+
+Execute `java -jar storm-deploy-alternative-local/target/storm-deploy-alternative-local.jar kill CLUSTER_NAME`
 
 Kills all nodes belonging in the cluster with name CLUSTER_NAME.
 
-### Attach
-Execute `java -jar storm-deploy-alternative.jar attach CLUSTER_NAME`
-
-Attaches the `bin/storm` script to a cluster with name CLUSTER_NAME.
-
-### Scaling
-Execute `java -jar storm-deploy-alternative.jar scaleout CLUSTER_NAME #NumInstances INSTANCE_TYPE`
-
-Adds new worker instances to an already running cluster. For example, you could execute `java -jar storm-deploy-alternative.jar scaleout test 2 m1.medium`, to add two new instances of the type m1.medium to the cluster called test. When completed, you can see the new nodes in the Storm UI.
-
-## FAQ
-+ I am seeing the error: `net.schmizz.sshj.userauth.UserAuthException: publickey auth failed`. This error means the software could not connect to the newly launched instances using SSH (for configuring them). There can be multiple reasons why this error happens. Please ensure you have ~/.ssh/id_rsa and ~/.ssh/id_rsa.pub and that both files are _valid_. Furthermore, please go to AWS EC2 interface -> Key Pairs, and delete the jclouds#CLUSTER_NAME keypair. If deploying the same cluster, using multiple machines, please ensure the same keypair exists on all machines. In case problems persist, please try generating a new keypair by executing `ssh-keygen -t rsa`, then delete old keypair from AWS EC2 interface and retry deployment.
-+ I am seeing the warning: `cipher strengths apparently limited by JCE policy`. You can improve your security by installing [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
-+ I am seeing the error: `the trustAnchors parameter must be non-empty`. This error usually means the Java CA certificates are broken. To fix first execute `sudo dpkg --purge --force-depends ca-certificates-java` then `sudo apt-get install ca-certificates-java`.
-
 ## Limitations
-Currently, only deploying to Ubuntu AMIs on Amazon EC2 is supported.
+
+Only deploying to Ubuntu AMIs on Amazon EC2 is supported.
