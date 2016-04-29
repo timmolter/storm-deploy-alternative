@@ -1,10 +1,12 @@
 package dk.kaspergsm.stormdeploy;
 
 import static org.jclouds.scriptbuilder.domain.Statements.exec;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
 import org.jclouds.compute.ComputeService;
 import org.jclouds.compute.domain.Hardware;
 import org.jclouds.compute.domain.NodeMetadata;
@@ -13,6 +15,7 @@ import org.jclouds.scriptbuilder.domain.Statement;
 import org.jclouds.scriptbuilder.domain.StatementList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import dk.kaspergsm.stormdeploy.configurations.Zookeeper;
 import dk.kaspergsm.stormdeploy.userprovided.Configuration;
 

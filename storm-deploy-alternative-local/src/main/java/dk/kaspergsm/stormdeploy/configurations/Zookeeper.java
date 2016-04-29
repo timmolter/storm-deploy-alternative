@@ -1,9 +1,12 @@
 package dk.kaspergsm.stormdeploy.configurations;
 
 import static org.jclouds.scriptbuilder.domain.Statements.exec;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jclouds.scriptbuilder.domain.Statement;
+
 import dk.kaspergsm.stormdeploy.Tools;
 
 /**
